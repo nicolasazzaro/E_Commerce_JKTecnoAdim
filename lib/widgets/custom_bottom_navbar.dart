@@ -28,7 +28,7 @@ class CustomBottomNav extends StatelessWidget {
           IconButton(
             enableFeedback: false,
             onPressed: () {
-              context.go('/test');
+              context.go('/');
             },
             icon: const Icon(
               Icons.dehaze,
@@ -39,7 +39,7 @@ class CustomBottomNav extends StatelessWidget {
           IconButton(
             enableFeedback: false,
             onPressed: () {
-              context.go('/profile');
+              context.go('/');
             },
             icon: const Icon(
               Icons.person_outline,
