@@ -28,7 +28,7 @@ class CustomBottomNav extends StatelessWidget {
           IconButton(
             enableFeedback: false,
             onPressed: () {
-              context.go('/');
+              context.go('/products');
             },
             icon: const Icon(
               Icons.dehaze,
