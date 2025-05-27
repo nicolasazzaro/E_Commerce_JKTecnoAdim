@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'core/router/app_router.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MainApp());
 }
 
@@ -9,12 +14,20 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
+    return MaterialApp.router(
+      routerConfig: router,
+      title: 'Accesorios Store',
+      theme: ThemeData(
+        useMaterial3: false,
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: Color(0xFF6D6B6B), // Fondo personalizado
+          selectedItemColor: Colors.black, // Color del ítem seleccionado
+          unselectedItemColor:
+              Colors.black, // Color de los ítems no seleccionados
+          elevation: 0, // Eliminar sombra
         ),
       ),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
