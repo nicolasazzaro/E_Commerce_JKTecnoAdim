@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/entities/categorie.dart';
-import 'package:flutter_application_1/widgets/custom_app_bar.dart';
-import 'package:flutter_application_1/widgets/custom_bottom_navbar.dart';
+// import 'package:flutter_application_1/widgets/custom_app_bar.dart'; // Eliminado
+// import 'package:flutter_application_1/widgets/custom_bottom_navbar.dart'; // Eliminado
 import 'package:go_router/go_router.dart';
 
 class ProductsScreen extends StatelessWidget {
@@ -16,12 +16,32 @@ class ProductsScreen extends StatelessWidget {
         .map((doc) => Categorie(id: doc.id, nombre: doc.get('nombre') ?? ''))
         .toList();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: CustomAppBar(),
- body: Column(
+      appBar: AppBar( // Usar AppBar estándar
+        backgroundColor: const Color.fromARGB(255, 75, 74, 74), // Color de fondo
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black), // Icono de retroceso
+          onPressed: () {
+            context.go('/home'); // Navegar a la home_screen
+          },
+        ),
+        title: const Text(
+          'Categorías', // Título de la pantalla
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'OpenSans',
+            color: Colors.black,
+          ),
+        ),
+        centerTitle: true,
+      ),
+      body: Column(
         children: [
           const SizedBox(height: 30),
           Text(
@@ -37,11 +57,10 @@ class ProductsScreen extends StatelessWidget {
           Expanded(child: _CategoriaList()),
         ],
       ),
-
-      bottomNavigationBar: const CustomBottomNav(),    );
+      // bottomNavigationBar: const CustomBottomNav(), // Eliminado
+    );
   }
 }
-
 
 class _CategoriaList extends StatelessWidget {
   Future<List<Categorie>> _fetchCategorias() async {
@@ -101,7 +120,6 @@ class _CategoriaItem extends StatelessWidget {
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
         leading: const Icon(Icons.category, color: Colors.white),
-
         trailing: const Icon(Icons.arrow_forward_ios, color: Colors.white),
         onTap: () {
           context.push('/categoria/${categoria.id}');

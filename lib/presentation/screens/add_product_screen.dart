@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_application_1/entities/categorie.dart';
-import 'package:flutter_application_1/widgets/custom_app_bar.dart';
-import 'package:flutter_application_1/widgets/custom_bottom_navbar.dart';
+import 'package:go_router/go_router.dart';
 
 class AddProductScreen extends StatefulWidget {
   const AddProductScreen({super.key});
@@ -80,7 +79,26 @@ class _AddProductScreenState extends State<AddProductScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: const CustomAppBar(),
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 75, 74, 74),
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            context.go('/home');
+          },
+        ),
+        title: const Text(
+          'Agregar Producto',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'OpenSans',
+            color: Colors.black,
+          ),
+        ),
+        centerTitle: true,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -374,8 +392,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
           ],
         ),
       ),
-
-      bottomNavigationBar: CustomBottomNav(),
     );
   }
 }
