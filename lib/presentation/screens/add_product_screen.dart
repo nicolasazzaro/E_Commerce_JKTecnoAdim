@@ -39,17 +39,14 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
         _formKey.currentState!.save();
 
-        await FirebaseFirestore.instance
-            .collection('categorias')
-            .doc(_categoriaSeleccionada)
-            .collection('productos')
-            .add({
-              'nombre': _nombreController.text.trim(),
-              'descripcion': _descripcionController.text.trim(),
-              'precio': double.parse(_precioController.text),
-              'stock': int.parse(_stockController.text),
-              'enOferta': _enOferta,
-            });
+        await FirebaseFirestore.instance.collection('productos').add({
+          'nombre': _nombreController.text.trim(),
+          'descripcion': _descripcionController.text.trim(),
+          'precio': double.parse(_precioController.text),
+          'stock': int.parse(_stockController.text),
+          'enOferta': _enOferta,
+          'categoriaId': _categoriaSeleccionada,
+        });
 
         print('Producto guardado exitosamente');
         _formKey.currentState!.reset();
@@ -276,7 +273,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                   horizontal: 20,
                                 ),
                               ),
-                              dropdownColor: const Color.fromARGB(255,75,74,74,),
+                              dropdownColor: const Color.fromARGB(
+                                255,
+                                75,
+                                74,
+                                74,
+                              ),
                               items:
                                   categorias
                                       .map(
