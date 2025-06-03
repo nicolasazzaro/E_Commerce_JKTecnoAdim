@@ -8,9 +8,7 @@ class CustomBottomNav extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 70,
-      decoration: const BoxDecoration(
-        color: Color.fromARGB(255, 75, 74, 74),
-      ),
+      decoration: const BoxDecoration(color: Color.fromARGB(255, 75, 74, 74)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -28,18 +26,14 @@ class CustomBottomNav extends StatelessWidget {
           IconButton(
             enableFeedback: false,
             onPressed: () {
-              context.go('/');
+              context.go('/control-stock');
             },
-            icon: const Icon(
-              Icons.dehaze,
-              color: Colors.black,
-              size: 40,
-            ),
+            icon: const Icon(Icons.dehaze, color: Colors.black, size: 40),
           ),
           IconButton(
             enableFeedback: false,
             onPressed: () {
-              context.go('/');
+              context.go('/add-product');
             },
             icon: const Icon(
               Icons.person_outline,
