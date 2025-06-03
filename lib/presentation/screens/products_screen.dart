@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/entities/categorie.dart';
-// import 'package:flutter_application_1/widgets/custom_app_bar.dart'; // Eliminado
-// import 'package:flutter_application_1/widgets/custom_bottom_navbar.dart'; // Eliminado
+import 'package:flutter_application_1/widgets/custom_app_bar.dart';
+import 'package:flutter_application_1/widgets/custom_bottom_navbar.dart';
 import 'package:go_router/go_router.dart';
 
 class ProductsScreen extends StatelessWidget {
