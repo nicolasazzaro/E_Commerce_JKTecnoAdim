@@ -5,78 +5,71 @@ import 'package:flutter_application_1/widgets/custom_app_bar.dart';
 import 'package:flutter_application_1/widgets/custom_bottom_navbar.dart';
 import 'package:go_router/go_router.dart';
 
-class ProductsScreen extends StatelessWidget {
-  const ProductsScreen({super.key});
+class CategoriesScreen extends StatelessWidget {
+  const CategoriesScreen({super.key});
 
   // Función para crear categoría con un producto de prueba
-  Future<void> crearCategoriaConEstructura(String nombreCategoria) async {
-    try {
-      final docRef = await FirebaseFirestore.instance.collection('categorias').add({
-        'nombre': nombreCategoria,
-      });
+Future<void> crearCategoria(String nombreCategoria) async {
+  try {
+    await FirebaseFirestore.instance.collection('categorias').add({
+      'nombre': nombreCategoria,
+    });
 
-      await docRef.collection('productos').add({
-        'nombre': 'PRUEBA',
-        'descripcion': 'Producto de prueba',
-        'precio': 0.0,
-        'stock': 0,
-        'oferta': false,
-      });
-
-      print('Categoría y producto de prueba creados correctamente.');
-    } catch (e) {
-      print('Error al crear categoría: $e');
-      rethrow;
-    }
-  } 
+    print('Categoría creada correctamente.');
+  } catch (e) {
+    print('Error al crear categoría: $e');
+    rethrow;
+  }
+}
 
   // Diálogo para crear una nueva categoría
-  Future<void> _mostrarDialogoNuevaCategoria(BuildContext context) async {
-    final TextEditingController _nameCategoriecontroller = TextEditingController();
+  // Diálogo para crear una nueva categoría
+Future<void> _mostrarDialogoNuevaCategoria(BuildContext context) async {
+  final TextEditingController _nameCategoriecontroller = TextEditingController();
 
-    await showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.grey[900],
-          title: const Text(
-            'Nueva Categoría',
-            style: TextStyle(color: Colors.white),
-          ),
-          content: TextFormField(
-            controller: _nameCategoriecontroller,
-            style: const TextStyle(color: Colors.white),
-            decoration: const InputDecoration(
-              hintText: 'Nombre de la categoría',
-              hintStyle: TextStyle(color: Colors.white54),
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white54),
-              ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
-              ),
+  await showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        backgroundColor: Colors.grey[900],
+        title: const Text(
+          'Nueva Categoría',
+          style: TextStyle(color: Colors.white),
+        ),
+        content: TextFormField(
+          controller: _nameCategoriecontroller,
+          style: const TextStyle(color: Colors.white),
+          decoration: const InputDecoration(
+            hintText: 'Nombre de la categoría',
+            hintStyle: TextStyle(color: Colors.white54),
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.white54),
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.white),
             ),
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancelar', style: TextStyle(color: Colors.redAccent)),
-            ),
-            TextButton(
-              onPressed: () async {
-                final nombre = _nameCategoriecontroller.text.trim();
-                if (nombre.isNotEmpty) {
-                  await crearCategoriaConEstructura(nombre);
-                }
-                Navigator.of(context).pop();
-              },
-              child: const Text('Guardar', style: TextStyle(color: Colors.greenAccent)),
-            ),
-          ],
-        );
-      },
-    );
-  }
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancelar', style: TextStyle(color: Colors.redAccent)),
+          ),
+          TextButton(
+            onPressed: () async {
+              final nombre = _nameCategoriecontroller.text.trim();
+              if (nombre.isNotEmpty) {
+                await crearCategoria(nombre); // ← Cambio aquí
+              }
+              Navigator.of(context).pop();
+            },
+            child: const Text('Guardar', style: TextStyle(color: Colors.greenAccent)),
+          ),
+        ],
+      );
+    },
+  );
+}
 
   @override
   Widget build(BuildContext context) {
@@ -179,7 +172,7 @@ class _CategoriaItem extends StatelessWidget {
         leading: const Icon(Icons.category, color: Colors.white),
         trailing: const Icon(Icons.arrow_forward_ios, color: Colors.white),
         onTap: () {
-          context.push('/categoria/${categoria.id}');
+          context.push('/categories/${categoria.id}');
         },
       ),
     );

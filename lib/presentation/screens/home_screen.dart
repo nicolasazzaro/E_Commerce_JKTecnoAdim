@@ -24,7 +24,7 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 40),
-            _buildMenuItem(context, 'Productos', '/products'),
+            _buildMenuItem(context, 'Productos', '/categories'),
             const SizedBox(height: 20),
             _buildMenuItem(context, 'Agregar Producto', '/add-product'),
             const SizedBox(height: 20),
