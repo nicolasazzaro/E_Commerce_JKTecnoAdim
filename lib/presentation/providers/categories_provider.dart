@@ -1,0 +1,38 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_application_1/entities/categorie.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+
+class CategoriesNotifier extends StateNotifier<List<Categorie>> {
+  CategoriesNotifier() : super([]) {
+    _loadCategorias(); // Carga inicial
+  }
+
+  Future<void> _loadCategorias() async {
+    final snapshot = await FirebaseFirestore.instance.collection('categorias').get();
+
+    state = snapshot.docs
+        .map((doc) => Categorie(id: doc.id, nombre: doc.get('nombre') ?? ''))
+        .toList();
+  }
+
+  Future<void> crearCategoria(String nombre) async {
+    try {
+      final docRef = await FirebaseFirestore.instance.collection('categorias').add({
+        'nombre': nombre,
+      });
+
+      final nuevaCategoria = Categorie(id: docRef.id, nombre: nombre);
+      state = [...state, nuevaCategoria];
+    } catch (e) {
+      print('Error al crear categoría: $e');
+      rethrow;
+    }
+  }
+}
+
+// PROVIDER
+final categoriaProvider = StateNotifierProvider<CategoriesNotifier, List<Categorie>>(
+  (ref) => CategoriesNotifier(),
+);
+

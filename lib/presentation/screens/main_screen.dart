@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/widgets/custom_app_bar.dart';
-// import 'package:flutter_application_1/widgets/custom_bottom_navbar.dart'; // Eliminar importación si ya no se usa
+import 'package:flutter_application_1/presentation/widgets/custom_app_bar.dart';
 import 'package:go_router/go_router.dart';
 
 class MainScreen extends StatelessWidget {
@@ -12,8 +11,8 @@ class MainScreen extends StatelessWidget {
       backgroundColor: Colors.black,
       appBar: const CustomAppBar(),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center, // Centrar contenido verticalmente
-        crossAxisAlignment: CrossAxisAlignment.stretch, // Estirar horizontalmente
+        mainAxisAlignment: MainAxisAlignment.center, 
+        crossAxisAlignment: CrossAxisAlignment.stretch, 
         children: [
           const SizedBox(height: 40),
           const Text(
@@ -42,16 +41,16 @@ class MainScreen extends StatelessWidget {
           ),
           const Spacer(),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 40.0), // Corregido a vertical
+            padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 40.0), 
             child: ElevatedButton(
               onPressed: () {
-                context.go('/home'); // Navegar a la home_screen
+                context.go('/home');
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.tealAccent, // Color del botón
-                padding: const EdgeInsets.symmetric(vertical: 15.0), // Padding interno del botón
+                backgroundColor: Colors.tealAccent, 
+                padding: const EdgeInsets.symmetric(vertical: 15.0), 
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0), // Bordes redondeados
+                  borderRadius: BorderRadius.circular(8.0), 
                 ),
               ),
               child: const Text(
@@ -59,14 +58,13 @@ class MainScreen extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black, // Color del texto
+                  color: Colors.black, 
                 ),
               ),
             ),
           ),
         ],
       ),
-      // bottomNavigationBar: const CustomBottomNav(), // Eliminado
     );
   }
 }
