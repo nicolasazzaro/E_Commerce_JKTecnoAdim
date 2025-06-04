@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/widgets/custom_app_bar.dart';
+import 'package:flutter_application_1/presentation/widgets/custom_app_bar.dart';
 import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatelessWidget {
