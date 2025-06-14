@@ -38,19 +38,15 @@ class _AddProductScreenState extends State<AddProductScreen> {
   }
 
   Future<String> subirImagen(File imagen) async {
-    // Extrae el nombre del archivo (ej: imagen.jpg)
     final nombreArchivo = path.basename(imagen.path);
 
-    // Crea una referencia en Firebase Storage
     final ref = FirebaseStorage.instance
         .ref()
-        .child('productos') // Carpeta dentro del storage
+        .child('productos') 
         .child(nombreArchivo);
 
-    // Sube el archivo
     await ref.putFile(imagen);
 
-    // Devuelve la URL pública para usarla en Firestore
     return await ref.getDownloadURL();
   }
 

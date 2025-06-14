@@ -16,7 +16,7 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const CategoriesScreen(),
     ),
     GoRoute(
-      path: '/',
+      path: '/add-product',
       builder: (context, state) => const AddProductScreen(),
     ),
     GoRoute(
