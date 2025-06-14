@@ -71,7 +71,7 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
       appBar: CustomAppBar(),
       body: Column(
         children: [
-          const SizedBox(height: 30),
+          const SizedBox(height: 10),
           const Text(
             "Productos",
             style: TextStyle(
