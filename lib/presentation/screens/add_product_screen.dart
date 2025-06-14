@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_application_1/entities/categorie.dart';
+import 'package:flutter_application_1/presentation/widgets/custom_bottom_navbar.dart';
 import 'package:go_router/go_router.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path/path.dart' as path;
 
 class AddProductScreen extends StatefulWidget {
   const AddProductScreen({super.key});
@@ -19,6 +24,34 @@ class _AddProductScreenState extends State<AddProductScreen> {
   final TextEditingController _stockController = TextEditingController();
   bool _enOferta = false;
   String _categoriaSeleccionada = '';
+  File? _imagenSeleccionada;
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> seleccionarImagen() async {
+    final XFile? imagen = await _picker.pickImage(source: ImageSource.gallery);
+    if (imagen != null) {
+      setState(() {
+        _imagenSeleccionada = File(imagen.path);
+      });
+    }
+  }
+
+  Future<String> subirImagen(File imagen) async {
+    // Extrae el nombre del archivo (ej: imagen.jpg)
+    final nombreArchivo = path.basename(imagen.path);
+
+    // Crea una referencia en Firebase Storage
+    final ref = FirebaseStorage.instance
+        .ref()
+        .child('productos') // Carpeta dentro del storage
+        .child(nombreArchivo);
+
+    // Sube el archivo
+    await ref.putFile(imagen);
+
+    // Devuelve la URL pública para usarla en Firestore
+    return await ref.getDownloadURL();
+  }
 
   Future<List<Categorie>> _fetchCategorias() async {
     final snapshot =
@@ -36,8 +69,16 @@ class _AddProductScreenState extends State<AddProductScreen> {
           throw Exception('Debe seleccionar una categoría');
         }
 
+        if (_imagenSeleccionada == null) {
+          throw Exception('Debe seleccionar una imagen');
+        }
+
         _formKey.currentState!.save();
 
+        // Subir imagen y obtener URL
+        final imagenUrl = await subirImagen(_imagenSeleccionada!);
+
+        // Guardar producto en Firestore
         await FirebaseFirestore.instance.collection('productos').add({
           'nombre': _nombreController.text.trim(),
           'descripcion': _descripcionController.text.trim(),
@@ -45,9 +86,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
           'stock': int.parse(_stockController.text),
           'enOferta': _enOferta,
           'categoriaId': _categoriaSeleccionada,
+          'imagenUrl': imagenUrl, // ✅ Aquí se guarda el link en Firestore
         });
 
         print('Producto guardado exitosamente');
+
+        // Limpiar formularios
         _formKey.currentState!.reset();
         _nombreController.clear();
         _descripcionController.clear();
@@ -56,6 +100,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
         setState(() {
           _categoriaSeleccionada = '';
           _enOferta = false;
+          _imagenSeleccionada = null;
         });
       }
     } catch (e) {
@@ -334,6 +379,44 @@ class _AddProductScreenState extends State<AddProductScreen> {
                           ),
                           const SizedBox(height: 16),
 
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Imagen del producto',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              _imagenSeleccionada != null
+                                  ? Image.file(
+                                    _imagenSeleccionada!,
+                                    height: 150,
+                                    width: 150,
+                                    fit: BoxFit.cover,
+                                  )
+                                  : const Text(
+                                    'No hay imagen seleccionada',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                              const SizedBox(height: 10),
+                              ElevatedButton(
+                                onPressed: seleccionarImagen,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.grey[700],
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                ),
+                                child: const Text('Seleccionar imagen'),
+                              ),
+                              const SizedBox(height: 20),
+                            ],
+                          ),
+
                           SwitchListTile(
                             title: Text(
                               '¿Está en oferta?',
@@ -394,6 +477,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
           ],
         ),
       ),
+      bottomNavigationBar: CustomBottomNav(),
     );
   }
 }

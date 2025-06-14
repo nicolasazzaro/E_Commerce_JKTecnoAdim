@@ -26,14 +26,14 @@ class CustomBottomNav extends StatelessWidget {
           IconButton(
             enableFeedback: false,
             onPressed: () {
-              context.go('/control-stock');
+              context.go('/home');
             },
             icon: const Icon(Icons.dehaze, color: Colors.black, size: 40),
           ),
           IconButton(
             enableFeedback: false,
             onPressed: () {
-              context.go('/add-product');
+              context.go('/admin-profile');
             },
             icon: const Icon(
               Icons.person_outline,
