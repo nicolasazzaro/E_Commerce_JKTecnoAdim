@@ -75,7 +75,7 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
           const Text(
             "Productos",
             style: TextStyle(
-              fontSize: 32,
+              fontSize: 40,
               fontWeight: FontWeight.bold,
               fontFamily: 'OpenSans',
               color: Colors.white,

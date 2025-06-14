@@ -23,13 +23,39 @@ class CustomBottomNav extends StatelessWidget {
               size: 40,
             ),
           ),
+          
           IconButton(
             enableFeedback: false,
             onPressed: () {
-              context.go('/home');
+              context.go('/categories');
             },
-            icon: const Icon(Icons.dehaze, color: Colors.black, size: 40),
+            icon: const Icon(
+              Icons.widgets_outlined,
+              color: Colors.black,
+              size: 38,
+            ),
           ),
+
+          IconButton(
+            enableFeedback: false,
+            onPressed: () {
+              context.go('/admin-profile');
+            },
+            icon: const Icon(Icons.add, color: Colors.black, size: 45),
+          ),
+
+          IconButton(
+            enableFeedback: false,
+            onPressed: () {
+              //context.go('/pedidos');
+            },
+            icon: const Icon(
+              Icons.local_shipping_outlined,
+              color: Colors.black,
+              size: 40,
+            ),
+          ),
+
           IconButton(
             enableFeedback: false,
             onPressed: () {

@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/presentation/widgets/custom_app_bar.dart';
+import 'package:flutter_application_1/presentation/widgets/custom_bottom_navbar.dart';
 import 'package:go_router/go_router.dart';
 
-// Define a simple Product class
 class Product {
   final String id;
   final String nombre;
@@ -26,63 +27,45 @@ class ControlStockScreen extends StatelessWidget {
   // Fetch products from Firestore
   Future<List<Product>> _fetchProducts() async {
     final snapshot =
-        await FirebaseFirestore.instance.collection('productos').get(); // Assuming 'productos' collection
+        await FirebaseFirestore.instance
+            .collection('productos')
+            .get(); 
 
-    return snapshot.docs
-        .map((doc) => Product.fromFirestore(doc))
-        .toList();
+    return snapshot.docs.map((doc) => Product.fromFirestore(doc)).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 75, 74, 74),
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            context.go('/home');
-          },
-        ),
-        title: const Text(
-          'Control de stock',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-          ),
-        ),
-        centerTitle: true,
-      ),
+      appBar: CustomAppBar(),
       body: Column(
         children: [
-          const SizedBox(height: 40), // Adjusted spacing based on image
+          const SizedBox(height: 30), 
           const Text(
-            'Control de stock', // Title from the image
+            'Control de stock', 
             style: TextStyle(
               color: Colors.white,
-              fontSize: 24, // Adjusted font size based on image
+              fontSize: 40,
               fontWeight: FontWeight.bold,
-              fontFamily: 'OpenSans',
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 20), // Spacing between title and list
-          Expanded(child: _ProductList()), // ProductList widget
+          const SizedBox(height: 20), 
+          Expanded(child: _ProductList()), 
         ],
       ),
+      bottomNavigationBar: CustomBottomNav(),
     );
   }
 }
 
-// Widget to display the list of products
 class _ProductList extends StatelessWidget {
   Future<List<Product>> _fetchProducts() async {
     final querySnapshot =
-        await FirebaseFirestore.instance.collection('productos').get(); // Assuming 'productos' collection
+        await FirebaseFirestore.instance
+            .collection('productos')
+            .get(); 
     return querySnapshot.docs.map((doc) {
       return Product.fromFirestore(doc);
     }).toList();
@@ -116,7 +99,6 @@ class _ProductList extends StatelessWidget {
   }
 }
 
-// Widget to display a single product item
 class _ProductItem extends StatelessWidget {
   final Product product;
 
@@ -125,26 +107,44 @@ class _ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      // elevation: 4, // Removed elevation for a flatter look like the image
-      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0), // Adjusted margin
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)), // Adjusted border radius
-      color: const Color.fromARGB(255, 75, 74, 74), // Color from the image background of items
+      margin: const EdgeInsets.symmetric(
+        horizontal: 16.0,
+        vertical: 4.0,
+      ), 
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ), // Adjusted border radius
+      color: const Color.fromARGB(
+        255,
+        75,
+        74,
+        74,
+      ), 
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0), // Padding inside the card
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16.0,
+          vertical: 12.0,
+        ), 
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               product.nombre,
-              style: const TextStyle(color: Colors.white, fontSize: 18), // Adjusted font size
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+              ), 
             ),
             Text(
-              '${product.stock}', // Display stock count
-              style: const TextStyle(color: Colors.tealAccent, fontSize: 18), // Color from image
+              '${product.stock}', 
+              style: const TextStyle(
+                color: Colors.tealAccent,
+                fontSize: 18,
+              ), 
             ),
           ],
         ),
       ),
     );
   }
-} 
+}

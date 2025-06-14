@@ -44,7 +44,7 @@ class MainScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 40.0), 
             child: ElevatedButton(
               onPressed: () {
-                context.go('/home');
+                context.go('/admin-profile');
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.tealAccent, 

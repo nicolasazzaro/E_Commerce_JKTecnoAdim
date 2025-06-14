@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_application_1/entities/categorie.dart';
+import 'package:flutter_application_1/presentation/widgets/custom_app_bar.dart';
 import 'package:flutter_application_1/presentation/widgets/custom_bottom_navbar.dart';
 import 'package:go_router/go_router.dart';
 import 'dart:io';
@@ -37,19 +38,15 @@ class _AddProductScreenState extends State<AddProductScreen> {
   }
 
   Future<String> subirImagen(File imagen) async {
-    // Extrae el nombre del archivo (ej: imagen.jpg)
     final nombreArchivo = path.basename(imagen.path);
 
-    // Crea una referencia en Firebase Storage
     final ref = FirebaseStorage.instance
         .ref()
-        .child('productos') // Carpeta dentro del storage
+        .child('productos') 
         .child(nombreArchivo);
 
-    // Sube el archivo
     await ref.putFile(imagen);
 
-    // Devuelve la URL pública para usarla en Firestore
     return await ref.getDownloadURL();
   }
 
@@ -121,26 +118,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 75, 74, 74),
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            context.go('/home');
-          },
-        ),
-        title: const Text(
-          'Agregar Producto',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-            color: Colors.black,
-          ),
-        ),
-        centerTitle: true,
-      ),
+      appBar: CustomAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -168,16 +146,18 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          const SizedBox(height: 30),
+
                           Text(
                             'Agregar Producto',
                             style: const TextStyle(
                               color: Colors.white,
-                              fontSize: 32,
+                              fontSize: 40,
                               fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.center,
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 50),
 
                           TextFormField(
                             controller: _nombreController,
