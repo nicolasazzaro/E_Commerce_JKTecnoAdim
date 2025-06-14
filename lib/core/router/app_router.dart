@@ -2,7 +2,7 @@ import 'package:flutter_application_1/presentation/screens/add_product_screen.da
 import 'package:flutter_application_1/presentation/screens/categories_screen.dart';
 import 'package:flutter_application_1/presentation/screens/main_screen.dart';
 import 'package:flutter_application_1/presentation/screens/control_stock_screen.dart';
-import 'package:flutter_application_1/presentation/screens/home_screen.dart';
+import 'package:flutter_application_1/presentation/screens/menu_screen.dart';
 import 'package:flutter_application_1/presentation/screens/admin_profile_screen.dart';
 
 import 'package:go_router/go_router.dart';
@@ -10,13 +10,13 @@ import 'package:go_router/go_router.dart';
 final GoRouter router = GoRouter(
   routes: [
     GoRoute(path: '/', builder: (context, state) => const MainScreen()),
-    GoRoute(path: '/home', builder: (context, state) => const HomeScreen()),
+    GoRoute(path: '/home', builder: (context, state) => const MenuScreen()),
     GoRoute(
       path: '/categories',
       builder: (context, state) => const CategoriesScreen(),
     ),
     GoRoute(
-      path: '/add-product',
+      path: '/',
       builder: (context, state) => const AddProductScreen(),
     ),
     GoRoute(

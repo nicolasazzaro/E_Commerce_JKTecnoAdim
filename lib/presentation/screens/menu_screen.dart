@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/presentation/widgets/custom_app_bar.dart';
+import 'package:flutter_application_1/presentation/widgets/custom_bottom_navbar.dart';
 import 'package:go_router/go_router.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class MenuScreen extends StatelessWidget {
+  const MenuScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,13 +35,14 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
+      bottomNavigationBar: CustomBottomNav(),
     );
   }
 
   Widget _buildMenuItem(BuildContext context, String title, String route) {
     return ElevatedButton(
       onPressed: () {
-        context.go(route);
+        context.push(route);
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.tealAccent,
