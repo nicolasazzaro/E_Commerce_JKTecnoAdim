@@ -39,7 +39,7 @@ class CustomBottomNav extends StatelessWidget {
           IconButton(
             enableFeedback: false,
             onPressed: () {
-              context.go('/admin-profile');
+              context.go('/add-product');
             },
             icon: const Icon(Icons.add, color: Colors.black, size: 45),
           ),
