@@ -3,16 +3,15 @@ import 'package:flutter_application_1/presentation/screens/categories_screen.dar
 import 'package:flutter_application_1/presentation/screens/control_pedidos_screen.dart';
 import 'package:flutter_application_1/presentation/screens/main_screen.dart';
 import 'package:flutter_application_1/presentation/screens/control_stock_screen.dart';
-import 'package:flutter_application_1/presentation/screens/menu_screen.dart';
 import 'package:flutter_application_1/presentation/screens/admin_profile_screen.dart';
 import 'package:flutter_application_1/presentation/screens/pedido_detail_screen.dart';
+import 'package:flutter_application_1/presentation/screens/products_by_categorie.dart';
 
 import 'package:go_router/go_router.dart';
 
 final GoRouter router = GoRouter(
   routes: [
     GoRoute(path: '/', builder: (context, state) => const MainScreen()),
-    GoRoute(path: '/home', builder: (context, state) => const MenuScreen()),
     GoRoute(
       path: '/categories',
       builder: (context, state) => const CategoriesScreen(),
@@ -30,8 +29,8 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const AdminProfileScreen(),
     ),
     GoRoute(
-      path: '/control-pedidos', 
-      builder: (context, state) =>  ControlPedidosScreen(),
+      path: '/control-pedidos',
+      builder: (context, state) => ControlPedidosScreen(),
     ),
     GoRoute(
       path: '/pedido-detail',
@@ -40,7 +39,12 @@ final GoRouter router = GoRouter(
         return PedidoDetailScreen(pedido: pedido);
       },
     ),
-
-
+    GoRoute(
+      path: '/categories/:id',
+      builder: (context, state) {
+        final categoriaId = state.pathParameters['id']!;
+        return ProductsByCategorieScreen(categoriaId: categoriaId);
+      },
+    ),
   ],
 );

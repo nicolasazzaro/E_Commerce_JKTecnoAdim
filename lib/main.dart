@@ -22,11 +22,11 @@ class MainApp extends StatelessWidget {
         theme: ThemeData(
           useMaterial3: false,
           bottomNavigationBarTheme: BottomNavigationBarThemeData(
-            backgroundColor: Color(0xFF6D6B6B), // Fondo personalizado
-            selectedItemColor: Colors.black, // Color del ítem seleccionado
+            backgroundColor: Color(0xFF6D6B6B),
+            selectedItemColor: Colors.black, 
             unselectedItemColor:
-                Colors.black, // Color de los ítems no seleccionados
-            elevation: 0, // Eliminar sombra
+                Colors.black, 
+            elevation: 0, 
           ),
         ),
         debugShowCheckedModeBanner: false,
