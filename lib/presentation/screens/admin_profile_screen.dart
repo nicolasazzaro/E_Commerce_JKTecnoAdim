@@ -2,9 +2,75 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/presentation/widgets/custom_app_bar.dart';
 import 'package:flutter_application_1/presentation/widgets/custom_bottom_navbar.dart';
 import 'package:go_router/go_router.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class AdminProfileScreen extends StatelessWidget {
+class AdminProfileScreen extends StatefulWidget {
   const AdminProfileScreen({super.key});
+
+  @override
+  State<AdminProfileScreen> createState() => _AdminProfileScreenState();
+}
+
+class _AdminProfileScreenState extends State<AdminProfileScreen> {
+  Future<int> _fetchPendingOrdersCount() async {
+    try {
+      final QuerySnapshot<Map<String, dynamic>> snapshot =
+          await FirebaseFirestore.instance
+              .collection('orders')
+              .where('status', isNotEqualTo: 'completed')
+              .get();
+      return snapshot.docs.length;
+    } catch (e) {
+      print("Error fetching pending orders: $e");
+      return 0;
+    }
+  }
+
+  Future<int> _fetchCompletedOrdersCount() async {
+    try {
+      final snapshot = await FirebaseFirestore.instance
+          .collection('orders')
+          .where('status', isEqualTo: 'completed')
+          .get();
+      return snapshot.docs.length;
+    } catch (e) {
+      print("Error fetching completed orders: $e");
+      return 0;
+    }
+  }
+
+  Future<int> _fetchProductsCount() async {
+    try {
+      final snapshot =
+          await FirebaseFirestore.instance.collection('productos').get();
+      return snapshot.docs.length;
+    } catch (e) {
+      print("Error fetching products: $e");
+      return 0;
+    }
+  }
+
+  Future<int> _fetchMonthlySales() async {
+    try {
+      final now = DateTime.now();
+      final startOfMonth = DateTime(now.year, now.month, 1);
+      final snapshot = await FirebaseFirestore.instance
+          .collection('orders')
+          .where('status', isEqualTo: 'completed')
+          .where('purchaseDate',
+              isGreaterThanOrEqualTo: Timestamp.fromDate(startOfMonth))
+          .get();
+      int total = 0;
+      for (var doc in snapshot.docs) {
+        final data = doc.data();
+        total += ((data['totalAmount'] ?? 0) as num).toInt();
+      }
+      return total;
+    } catch (e) {
+      print("Error fetching monthly sales: $e");
+      return 0;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,14 +116,40 @@ class AdminProfileScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 40),
-            _buildStatItem(
-              'Ventas totales del mes',
-              '\$42000',
-            ), // Dato de ejemplo
-            _buildStatItem('Productos activos', '150'), // Dato de ejemplo
-            _buildStatItem('Pedidos pendientes', '8'), // Dato de ejemplo
-            _buildStatItem('Pedidos finalizados', '15'), // Dato de ejemplo
-
+            FutureBuilder<int>(
+              future: _fetchMonthlySales(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData)
+                  return _buildStatItem('Ventas totales del mes', '...');
+                return _buildStatItem(
+                    'Ventas totales del mes', '\$${snapshot.data}');
+              },
+            ),
+            FutureBuilder<int>(
+              future: _fetchProductsCount(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData)
+                  return _buildStatItem('Productos activos', '...');
+                return _buildStatItem('Productos activos', '${snapshot.data}');
+              },
+            ),
+            FutureBuilder<int>(
+              future: _fetchPendingOrdersCount(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData)
+                  return _buildStatItem('Pedidos pendientes', '...');
+                return _buildStatItem('Pedidos pendientes', '${snapshot.data}');
+              },
+            ),
+            FutureBuilder<int>(
+              future: _fetchCompletedOrdersCount(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData)
+                  return _buildStatItem('Pedidos finalizados', '...');
+                return _buildStatItem(
+                    'Pedidos finalizados', '${snapshot.data}');
+              },
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 16.0,
@@ -67,7 +159,7 @@ class AdminProfileScreen extends StatelessWidget {
                 onTap: () {
                   context.go(
                     '/control-stock',
-                  ); 
+                  );
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(
@@ -85,6 +177,41 @@ class AdminProfileScreen extends StatelessWidget {
                       SizedBox(width: 10),
                       Text(
                         'Ir al Control de Stock',
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 10.0, // Ajustar vertical para espacio entre botones
+              ),
+              child: GestureDetector(
+                onTap: () {
+                  context.go(
+                    '/control-pedidos',
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 16.0,
+                    horizontal: 20.0,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.teal, // Color llamativo
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.shopping_cart,
+                          color: Colors.white), // Icono para pedidos
+                      SizedBox(width: 10),
+                      Text(
+                        'Ir al Control de Pedidos',
                         style: TextStyle(color: Colors.white, fontSize: 18),
                       ),
                     ],
