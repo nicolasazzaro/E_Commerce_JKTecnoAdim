@@ -23,7 +23,6 @@ class CustomBottomNav extends StatelessWidget {
               size: 40,
             ),
           ),
-          
           IconButton(
             enableFeedback: false,
             onPressed: () {
@@ -35,7 +34,6 @@ class CustomBottomNav extends StatelessWidget {
               size: 38,
             ),
           ),
-
           IconButton(
             enableFeedback: false,
             onPressed: () {
@@ -43,11 +41,10 @@ class CustomBottomNav extends StatelessWidget {
             },
             icon: const Icon(Icons.add, color: Colors.black, size: 45),
           ),
-
           IconButton(
             enableFeedback: false,
             onPressed: () {
-              //context.go('/pedidos');
+              context.go('/control-pedidos');
             },
             icon: const Icon(
               Icons.local_shipping_outlined,
@@ -55,7 +52,6 @@ class CustomBottomNav extends StatelessWidget {
               size: 40,
             ),
           ),
-
           IconButton(
             enableFeedback: false,
             onPressed: () {
