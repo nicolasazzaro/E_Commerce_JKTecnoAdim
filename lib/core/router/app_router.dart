@@ -6,6 +6,7 @@ import 'package:flutter_application_1/presentation/screens/control_stock_screen.
 import 'package:flutter_application_1/presentation/screens/admin_profile_screen.dart';
 import 'package:flutter_application_1/presentation/screens/pedido_detail_screen.dart';
 import 'package:flutter_application_1/presentation/screens/products_by_categorie.dart';
+import 'package:flutter_application_1/presentation/screens/update_product_screen.dart';
 
 import 'package:go_router/go_router.dart';
 
@@ -44,6 +45,17 @@ final GoRouter router = GoRouter(
       builder: (context, state) {
         final categoriaId = state.pathParameters['id']!;
         return ProductsByCategorieScreen(categoriaId: categoriaId);
+      },
+    ),
+    GoRoute(
+      path: '/update-product',
+      builder: (context, state) {
+        final data = state.extra as Map<String, dynamic>;
+        return UpdateProductScreen(
+          categoriaId: data['categoriaId'],
+          productoId: data['productoId'],
+          datosProducto: data['datosProducto'],
+        );
       },
     ),
   ],

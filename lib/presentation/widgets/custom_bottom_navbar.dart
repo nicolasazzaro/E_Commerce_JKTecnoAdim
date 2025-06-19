@@ -9,6 +9,7 @@ class CustomBottomNav extends StatelessWidget {
     return Container(
       height: 70,
       decoration: const BoxDecoration(color: Color.fromARGB(255, 75, 74, 74)),
+
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
