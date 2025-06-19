@@ -107,17 +107,7 @@ class _ControlPedidosScreenState extends State<ControlPedidosScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => context.go('/admin-profile'),
-        ),
-        title: const Text(
-          'Control de Pedidos',
-          style: TextStyle(color: Colors.white),
-        ),
-      ),
+      appBar: CustomAppBar(),
       body: Column(
         children: [
           // Encabezado fijo en la parte superior.

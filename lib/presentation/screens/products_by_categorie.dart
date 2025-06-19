@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_application_1/entities/product.dart';
 import 'package:flutter_application_1/presentation/widgets/custom_app_bar.dart';
 import 'package:flutter_application_1/presentation/widgets/custom_bottom_navbar.dart';
+import 'package:go_router/go_router.dart';
 
 class ProductsByCategorieScreen extends StatelessWidget {
   final String categoriaId;
@@ -18,11 +19,10 @@ class ProductsByCategorieScreen extends StatelessWidget {
         children: [
           const SizedBox(height: 20),
           FutureBuilder<DocumentSnapshot>(
-            future:
-                FirebaseFirestore.instance
-                    .collection('categorias')
-                    .doc(categoriaId)
-                    .get(),
+            future: FirebaseFirestore.instance
+                .collection('categorias')
+                .doc(categoriaId)
+                .get(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const CircularProgressIndicator();
@@ -52,14 +52,12 @@ class ProductsByCategorieScreen extends StatelessWidget {
               );
             },
           ),
-
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
-              stream:
-                  FirebaseFirestore.instance
-                      .collection('productos')
-                      .where('categoriaId', isEqualTo: categoriaId)
-                      .snapshots(),
+              stream: FirebaseFirestore.instance
+                  .collection('productos')
+                  .where('categoriaId', isEqualTo: categoriaId)
+                  .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.hasError)
                   return const Center(child: Text('Error cargando productos'));
@@ -90,7 +88,10 @@ class ProductsByCategorieScreen extends StatelessWidget {
                       doc.id,
                       doc.data() as Map<String, dynamic>,
                     );
-                    return _ProductCard(producto: producto);
+                    return _ProductCard(
+                      producto: producto,
+                      categoriaId: categoriaId,
+                    );
                   },
                 );
               },
@@ -105,8 +106,13 @@ class ProductsByCategorieScreen extends StatelessWidget {
 
 class _ProductCard extends StatelessWidget {
   final Product producto;
+  final String categoriaId;
 
-  const _ProductCard({super.key, required this.producto});
+  const _ProductCard({
+    super.key,
+    required this.producto,
+    required this.categoriaId,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -144,6 +150,18 @@ class _ProductCard extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.edit, color: Colors.teal),
               onPressed: () {
+                context.push('/update-product', extra: {
+                  'categoriaId': categoriaId,
+                  'productoId': producto.id,
+                  'datosProducto': {
+                    'nombre': producto.nombre,
+                    'descripcion': producto.descripcion,
+                    'precio': producto.precio,
+                    'stock': producto.stock,
+                    'imagenUrl': producto.imagenUrl,
+                    'enOferta': producto.enOferta,
+                  },
+                });
               },
             ),
             IconButton(
@@ -151,37 +169,36 @@ class _ProductCard extends StatelessWidget {
               onPressed: () async {
                 final confirmacion = await showDialog<bool>(
                   context: context,
-                  builder:
-                      (context) => AlertDialog(
-                        backgroundColor: Colors.grey[900],
-                        title: const Text(
-                          'Confirmar eliminación',
-                          style: TextStyle(color: Colors.white),
+                  builder: (context) => AlertDialog(
+                    backgroundColor: Colors.grey[900],
+                    title: const Text(
+                      'Confirmar eliminación',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    content: const Text(
+                      '¿Estás seguro de eliminar este producto?',
+                      style: TextStyle(color: Colors.white70),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(false),
+                        child: const Text(
+                          'Cancelar',
+                          style: TextStyle(color: Colors.teal),
                         ),
-                        content: const Text(
-                          '¿Estás seguro de eliminar este producto?',
-                          style: TextStyle(color: Colors.white70),
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pop(false),
-                            child: const Text(
-                              'Cancelar',
-                              style: TextStyle(color: Colors.teal),
-                            ),
-                          ),
-                          FilledButton(
-                            onPressed: () => Navigator.of(context).pop(true),
-                            style: FilledButton.styleFrom(
-                              backgroundColor: Colors.red,
-                              foregroundColor: Colors.white,
-                            ),
-                            child: const Text(
-                              'Eliminar',
-                            ),
-                          ),
-                        ],
                       ),
+                      FilledButton(
+                        onPressed: () => Navigator.of(context).pop(true),
+                        style: FilledButton.styleFrom(
+                          backgroundColor: Colors.red,
+                          foregroundColor: Colors.white,
+                        ),
+                        child: const Text(
+                          'Eliminar',
+                        ),
+                      ),
+                    ],
+                  ),
                 );
 
                 if (confirmacion == true) {

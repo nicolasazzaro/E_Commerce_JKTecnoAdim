@@ -184,41 +184,6 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 10.0, // Ajustar vertical para espacio entre botones
-              ),
-              child: GestureDetector(
-                onTap: () {
-                  context.go(
-                    '/control-pedidos',
-                  );
-                },
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 16.0,
-                    horizontal: 20.0,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.teal, // Color llamativo
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.shopping_cart,
-                          color: Colors.white), // Icono para pedidos
-                      SizedBox(width: 10),
-                      Text(
-                        'Ir al Control de Pedidos',
-                        style: TextStyle(color: Colors.white, fontSize: 18),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
           ],
         ),
       ),
